@@ -47,10 +47,53 @@ views  模板文件
 浪费 git push 的时间阿  
 从 git 里移除掉的方法(不是删到回收站去, 只是让 git 不要对这个目录作版本管理了):  
 
+    git rm --cached -r node_module  
 
-3. 
+ref: http://stackoverflow.com/questions/1143796/remove-a-file-from-a-git-repository-without-deleting-it-from-the-local-filesyste
+
+3. Ubuntu 操作 git 提交的时候连末尾带 ~ 符号的文件也提交上去了
+比如有个 README.MD  还有个 README.MD~
+查了资料发现那是 gedit 的文件备份, 
+http://askubuntu.com/questions/90515/where-do-files-ending-with-a-come-from
+
+从 git 里删除掉  ~ 后缀文件的方法是：
+1. 先列出全部跟踪的文件, 看下哪些后缀为 ~
+
+    git ls-tree -r master --name-only
+    
+http://stackoverflow.com/questions/15606955/how-can-i-make-git-show-a-list-of-the-files-that-are-being-tracked
+
+我这边的结果是
+
+    1c7-server.js~
+    README.md
+    README.md~
+    index.js
+    index.js~
+    package.json
+    package.json~
+    submit.html~
+    views/display.html
+    views/display.html~
+    views/submit.html~
+    views/submit.jade
+    views/submit.jade~
 
 
+然后
+  
+    git rm 1c7-server.js~
+    git rm README.md~
+    git rm index.js~
+    git rm package.json~
+    git rm submit.html~
+    git rm views/display.html~
+    git rm views/submit.html~
+    git rm views/submit.jade~
+
+
+
+4. package.json 是
 
 
 
