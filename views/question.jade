@@ -1,0 +1,27 @@
+
+| #{r['title']}
+
+<br>
+
+| #{r['desc']}
+
+<br>
+
+if r['comments'] != undefined
+  ul
+  each val, index in r['comments']
+    <li>#{val}</li>
+
+
+
+<br>
+<br>
+form(action='/comment', method='post')
+    textarea(placeholder='comment here', name='comment')
+    br
+    <input type='hidden' name='qid' value='#{r['qid']}'>
+    <input type='submit' value='submit'>
+    
+
+
+

@@ -10,14 +10,16 @@
     "type": "git",
     "url": "git+https://github.com/1c7/ask-answer-website-practice.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Cheng Zheng",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/1c7/ask-answer-website-practice/issues"
   },
   "homepage": "https://github.com/1c7/ask-answer-website-practice#readme",
   "dependencies": {
     "express": "^4.13.3",
-    "mongodb": "^2.0.42"
+    "mongodb": "^2.0.42",
+    "body-parser": "~1.13.3",
+    "multer": "~1.0.3"
   }
 }

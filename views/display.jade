@@ -1,0 +1,8 @@
+
+if r == ''
+  | 没有任何数据呢
+else
+  each val, index in r
+    | 问题 #{index+1}
+    <a href='/question/#{val["qid"]}'>#{val["title"]}</a>
+    <br/>

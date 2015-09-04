@@ -1,12 +1,13 @@
 html
   head
   body
-    input(type=text, placeholder=question)
-    br
-    textarea(placeholder=description)
-    br
-    <input type=´submit´ value=´submit´>
-
+    form(action='./h_submit', method='post')
+        input(type='text', placeholder='question', name='title')
+        br
+        textarea(placeholder='description', name='desc')
+        br
+        <input type='submit' value='submit'>
+    
 
 
 
