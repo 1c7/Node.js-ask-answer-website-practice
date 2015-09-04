@@ -1,40 +1,43 @@
 ### 练手项目，做个问答网站练下 Node.js 和 MongoDB  
 
 <br>
-### 具体用啥？
+#### 具体用啥？
 
-Node.js + [Express.js 4.13.3](http://expressjs.com/) + [Jade](http://jade-lang.com/reference/case/)  
+[Node.js](https://nodejs.org/)  
+[Express.js 4.13.3](http://expressjs.com/)  框架  
+[Jade](http://jade-lang.com/reference/case/)  模板引擎  
 MongoDB  
 Linux(Ubuntu 14.04)  
 
 
 <br>
-### 练习步骤
+#### 练习步骤
 一步步简单来  
 1. 提交问题(一个页面提交问题和问题描述，另一个页面看问题的列表)  
-2. 回答问题
-__2. 账户(可以注册，登陆. 再随便做个账户页)__  
-3. 给问题下的回答点赞  
+2. 回答问题  
+__3. 账户(可以注册，登陆. 再随便做个账户页)__  
+4. 给问题下的回答点赞  
 4. ...?  
 
 <br>
-### 目录说明
-public 静态文件, image/css/js  
-views  模板文件  
+#### 目录说明
+public/ 静态文件目录, image/css/js  
+views/  模板文件目录  
 
 
 <br>
-### MongoDB 数据库设计(根据情况不断改)
+#### MongoDB 数据库设计(根据情况不断改)
 
 database name : ask-answer  
 
-collection:
-    q&a - 存所有的问题和回答数据
-    user - 存用户数据
+collection:  
+    qa - 存问题和回答数据  
+    account - 存登陆数据  
+    user - 存用户信息  
 
 
 <br>
-### 学到的东西 & 踩过的坑(把对大家可能有用的都列一下)
+#### 学到的东西 & 踩过的坑
 
 ##### 1. 如果 Express.js 用 Jade 提示失败。  
 那就是你的 Express.js 和 Jade 一个安装在本地，一个全局安装 (-g)  
@@ -122,7 +125,7 @@ http://expressjs.com/4x/api.html#req.body
 我概括下:  
 
     npm install body-parser  
-    var bodyParser = require('body-parser');  in your xxx.js file  
+    var bodyParser = require('body-parser');  
 
 然后接收的地方这样写:
 
@@ -133,26 +136,23 @@ http://expressjs.com/4x/api.html#req.body
         res.send(t);
     });
 
+
+<br>
+##### 7. 存密码时候用 bcrypt
+我也没懂具体为啥网上推荐用 bcrypt, 有空仔细学下  
+
+    var bcrypt = require('bcrypt-nodejs');  
+    //    https://github.com/shaneGirish/bcrypt-nodejs  
+
+
+
+http://codahale.com/how-to-safely-store-a-password/  
+
+
+
 <br/>
 #### 框架比较
 https://www.airpair.com/node.js/posts/nodejs-framework-comparison-express-koa-hapi
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
