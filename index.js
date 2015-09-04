@@ -3,7 +3,9 @@ var path = require('path');
 var app = express();
 //var jade = require('jade');
 var bodyParser = require('body-parser');
-
+var bcrypt = require('bcrypt-nodejs');
+// 加密密码用的
+// https://github.com/shaneGirish/bcrypt-nodejs
 
 /*
     配置
@@ -258,17 +260,168 @@ app.post('/comment', function (req, res) {
 
 
 
+
+
+
+
+// 注册账户页面
+app.get('/account/signup', function (req, res) {
+    //res.render('signup');
+    
+res.set({
+  'Content-Type': 'text/html'
+});
+
+    // set http header
+    res.sendfile('./views/signup.jade');
+});
+
+
+
+// ajax - 账户名是否已经存在?
+app.get('/account/username_exists', function (req, res) {
+  
+});
+
+
+
+
+
+// 处理注册请求
+app.post('/account/handle_signup', function (req, res) {
+
+  // 参数是否完整
+  var username = req.body.un;
+  var password = req.body.pwd;
+  if(username === '' || password === ''){
+      res.send('参数不全');
+      return;
+  }
+  
+  // 账户是否已经存在?
+  MongoClient.connect(db_url, function(err, db) {
+        if(err) { return console.dir(err); }
+
+        var collection = db.collection('account');
+        collection.findOne({'username':username}, function(err, r){
+            if(r != null){
+              res.send("用户名已存在");
+              console.log("用户名已存在");
+              return;
+            }else{
+              
+              // 加密密码
+              var salt = 'yoyo-ask-answer-19';
+              password = password + salt;
+              
+              password = bcrypt.hashSync(password);
+              // 如何安全存储密码?
+              // http://codahale.com/how-to-safely-store-a-password/
+              //     
+              var creationDate = Date.now();
+  
+              // 构造文档
+              var doc = {
+                'username':username, 
+                'password':password,
+                'creationDate':creationDate
+              };
+              
+             
+              collection.insert(doc);
+              
+            }
+        });
+        
+  });
+
+  
+  
+  
+  // 重定向到登陆页
+  res.redirect('./login');
+});
+
+
+
+
+// 登陆页面
+app.get('/account/login', function (req, res) {
+
+res.set({
+  'Content-Type': 'text/html'
+});
+    res.sendfile('./views/login.jade');
+    
+});
+
+
+
+
+// 处理登陆请求
+app.post('/account/handle_login', function (req, res) {
+
+  // 参数是否完整
+  var username = req.body.un;
+  var password = req.body.pwd;
+  if(username === '' || password === ''){
+      res.send('[登陆失败]参数不全');
+      return;
+  }
+  
+
+  // 查 MongoDB
+  MongoClient.connect(db_url, function(err, db) {
+      if(err) { return console.dir(err); }
+
+      var collection = db.collection('account');
+
+      collection.findOne({'username':username}, function(err, account) {
+        console.log(account);
+        
+        
+        if(account == null){
+          res.send('账户不存在');
+          return;
+        }
+        console.log(password);
+        console.log(account.password);
+        // https://github.com/shaneGirish/bcrypt-nodejs
+        bcrypt.compare(password, account.password, function(err, ress) {
+          console.log(ress);
+          console.log(typeof ress);
+          if(ress){
+            console.log('密码正确');
+            res.send('密码正确');
+          }else{
+             console.log('密码错');
+             res.send('密码错');
+          }
+        });
+      });
+
+});
+      
+
+    
+    
+  // 密码正确, 设置 session
+  
+  // 密码错误, 返回登录页
+    
+    
+});
+
+
+
+
+
 // 测试页
-// 比如你想测一个随机数生成算法, 想在网页看到效果，就用这个
 app.get('/test', function (req, res) {
 
-/*
-    思路
-    看mongodb里有没有那个数字
-*/
-    // Date.now() == 1441364199786
-    // 类似这样的
-    res.send('a'+Date.now());
+    
+    var b = bcrypt.compareSync("bacon", hash);
+    res.send(hash+b);
     return;
 
 
@@ -296,6 +449,14 @@ app.get('/test', function (req, res) {
     
 });
 
+
+
+
+
+
+
+
+// ==============================================
 
 
 var server = app.listen(3000, function () {

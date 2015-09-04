@@ -7,18 +7,14 @@ Node.js + [Express.js 4.13.3](http://expressjs.com/) + [Jade](http://jade-lang.c
 MongoDB  
 Linux(Ubuntu 14.04)  
 
-<br>
-### 学习计划
-1. 学 Express.js -- 怎么 MVC，以及其他一些概念  
-2. 学 MongoDB   
-3. package.json 怎么自动生成，标准在哪里？  
 
 <br>
 ### 练习步骤
 一步步简单来  
-__1. 问答(一个页面提交问题和问题描述，另一个页面看问题的列表)__  
-2. 账户(可以注册，登陆, 个人账户页的东西不多)  
-3. 点赞  
+1. 提交问题(一个页面提交问题和问题描述，另一个页面看问题的列表)  
+2. 回答问题
+__2. 账户(可以注册，登陆. 再随便做个账户页)__  
+3. 给问题下的回答点赞  
 4. ...?  
 
 <br>
@@ -28,11 +24,9 @@ views  模板文件
 
 
 <br>
-### MongoDB 数据库设计(这个会根据情况不断改)
+### MongoDB 数据库设计(根据情况不断改)
 
 database name : ask-answer  
-
-<br>
 
 collection:
     q&a - 存所有的问题和回答数据
@@ -42,7 +36,6 @@ collection:
 <br>
 ### 学到的东西 & 踩过的坑(把对大家可能有用的都列一下)
 
-<br>
 ##### 1. 如果 Express.js 用 Jade 提示失败。  
 那就是你的 Express.js 和 Jade 一个安装在本地，一个全局安装 (-g)  
 造成了这种结果。  
@@ -55,7 +48,7 @@ collection:
 
 <br>
 ##### 2. node_module 目录不用上传  
-浪费 git push 的时间阿  
+浪费 git push 的时间  
 从 git 里移除掉的方法(不是删到回收站去, 只是让 git 不要对这个目录作版本管理了):  
 
     git rm --cached -r node_module  
@@ -70,7 +63,7 @@ http://askubuntu.com/questions/90515/where-do-files-ending-with-a-come-from
 
 从 git 里删除掉  ~ 后缀文件的方法是：
 
-1. 先列出全部跟踪的文件, 看下哪些后缀为 ~
+先列出全部跟踪的文件, 看下哪些后缀为 ~
 
     git ls-tree -r master --name-only
     
@@ -140,8 +133,8 @@ http://expressjs.com/4x/api.html#req.body
         res.send(t);
     });
 
-    
-### 框架比较
+<br/>
+#### 框架比较
 https://www.airpair.com/node.js/posts/nodejs-framework-comparison-express-koa-hapi
 
 
