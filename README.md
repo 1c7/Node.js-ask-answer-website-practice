@@ -4,25 +4,43 @@
 #### 具体用啥？
 
 [Node.js](https://nodejs.org/)  
-[Express.js 4.13.3](http://expressjs.com/)  框架  
-[Jade](http://jade-lang.com/reference/case/)  模板引擎  
+[Express.js 4.13.3](http://expressjs.com/) -- 框架  
+[Jade](http://jade-lang.com/reference/case/) -- 模板引擎  
 MongoDB  
 Linux(Ubuntu 14.04)  
-
+[Boostrap3](http://getbootstrap.com/getting-started/#download)(因为现在4暂时还没出)  
+jQuery  
 
 <br>
-#### 练习步骤
+#### 步骤
 一步步简单来  
 1. 提交问题(一个页面提交问题和问题描述，另一个页面看问题的列表)  
 2. 回答问题  
 __3. 账户(可以注册，登陆. 再随便做个账户页)__  
+4. 设计下页面
+    首页问题列表
+    问题详情页
+    注册页
+    登陆页
+
 4. 给问题下的回答点赞  
-4. ...?  
+5. 第三方登陆(QQ, 新浪微博)  
+6. 邮箱登录 - 确认邮箱  
+7. 找回密码  
+8. 简单统计页, 显示 问题总数 和 用户总数  
+
+
+
 
 <br>
 #### 目录说明
-public/ 静态文件目录, image/css/js  
+public/ 静态文件目录  
+    public/css/  存 css 文件  
+    public/js/  存 js 文件  
+    public/images/  网站本身的图片  
+    public/font/  bootstrap 的字体目录  
 views/  模板文件目录  
+img/  用户的图片, 比如头像等等  
 
 
 <br>
@@ -32,9 +50,9 @@ database name : ask-answer
 
 collection:  
     qa - 存问题和回答数据  
-    account - 存登陆数据  
-    user - 存用户信息  
-
+    account - 存登陆数据(用户名, 密码, 邮箱, 各类社交平台的第三方登陆ID)  
+    user - 存用户信息(用户的名字, 比如："格拉瓦的春天". 还有性别, 等等)  
+    stat - 存统计数据, 比如每一天的问题数和用户数  
 
 <br>
 #### 学到的东西 & 踩过的坑
@@ -156,8 +174,8 @@ https://www.airpair.com/node.js/posts/nodejs-framework-comparison-express-koa-ha
 
 
 
-
-
+<br/>
+<br/>
 
 
 

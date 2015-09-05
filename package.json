@@ -20,6 +20,9 @@
     "express": "^4.13.3",
     "mongodb": "^2.0.42",
     "body-parser": "~1.13.3",
-    "multer": "~1.0.3"
+    "multer": "~1.0.3",
+    "express-session": "~1.11.3",
+    "redis": "~1.0.0",
+    "connect-redis": "~2.5.0"
   }
 }

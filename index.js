@@ -1,11 +1,51 @@
+// TODO
+/*
+  1. 把登陆方面的 session 搞好, 存 redis？
+  3. 去设计首页
+*/
+
+
+
+
+
+
+
+
 var express = require('express');
-var path = require('path');
 var app = express();
-//var jade = require('jade');
+// express.js 框架
+
+var path = require('path');
+// 
+
+var session = require('express-session');
+// session
+
 var bodyParser = require('body-parser');
+// 拿 POST 参数
+
 var bcrypt = require('bcrypt-nodejs');
-// 加密密码用的
-// https://github.com/shaneGirish/bcrypt-nodejs
+// 加密密码用的  https://github.com/shaneGirish/bcrypt-nodejs
+
+var redis = require('redis');
+// 内存数据库
+// 别忘了 redis 是一个, nodejs 这边的 redis 交互又是一个, 两码事
+// https://cnodejs.org/topic/5200755c44e76d216a1620df
+// http://www.sitepoint.com/using-redis-node-js/
+
+
+
+var client  = redis.createClient('6379', '127.0.0.1');
+client.on("error", function(error) {
+    console.log(error);
+});
+
+
+
+
+
+
+
 
 /*
     配置
@@ -293,8 +333,15 @@ app.post('/account/handle_signup', function (req, res) {
   // 参数是否完整
   var username = req.body.un;
   var password = req.body.pwd;
-  if(username === '' || password === ''){
+  var confirm_password = req.body.confirm_pwd;
+  
+  if(username === '' || password === ''|| confirm_password === ''){
       res.send('参数不全');
+      return;
+  }
+  
+  if(password != confirm_password){
+      res.send('两次密码不一致!');
       return;
   }
   
@@ -317,17 +364,15 @@ app.post('/account/handle_signup', function (req, res) {
               password = bcrypt.hashSync(password);
               // 如何安全存储密码?
               // http://codahale.com/how-to-safely-store-a-password/
-              //     
+  
               var creationDate = Date.now();
   
-              // 构造文档
               var doc = {
                 'username':username, 
                 'password':password,
                 'creationDate':creationDate
               };
-              
-             
+
               collection.insert(doc);
               
             }
@@ -348,9 +393,9 @@ app.post('/account/handle_signup', function (req, res) {
 // 登陆页面
 app.get('/account/login', function (req, res) {
 
-res.set({
-  'Content-Type': 'text/html'
-});
+  res.set({
+    'Content-Type': 'text/html'
+  });
     res.sendfile('./views/login.jade');
     
 });
@@ -369,7 +414,11 @@ app.post('/account/handle_login', function (req, res) {
       return;
   }
   
-
+  // salt
+  var salt = 'yoyo-ask-answer-19';
+  password = password + salt;
+  
+  
   // 查 MongoDB
   MongoClient.connect(db_url, function(err, db) {
       if(err) { return console.dir(err); }
@@ -377,35 +426,39 @@ app.post('/account/handle_login', function (req, res) {
       var collection = db.collection('account');
 
       collection.findOne({'username':username}, function(err, account) {
-        console.log(account);
-        
-        
+
         if(account == null){
           res.send('账户不存在');
           return;
         }
-        console.log(password);
-        console.log(account.password);
+
         // https://github.com/shaneGirish/bcrypt-nodejs
         bcrypt.compare(password, account.password, function(err, ress) {
-          console.log(ress);
-          console.log(typeof ress);
           if(ress){
             console.log('密码正确');
-            res.send('密码正确');
+            
+            
+            res.redirect('/');
+            return;
+            
           }else{
-             console.log('密码错');
-             res.send('密码错');
+             //console.log('密码错');
+             res.redirect('./login');
+             return;
           }
         });
+        
       });
 
-});
+   });
       
 
     
     
   // 密码正确, 设置 session
+  
+  
+  
   
   // 密码错误, 返回登录页
     
@@ -413,6 +466,17 @@ app.post('/account/handle_login', function (req, res) {
 });
 
 
+
+// 统计页
+/*
+  1. 有多少个问题
+  2. 多少个用户
+*/
+app.get('/stat', function (req, res) {
+
+    res.send("统计页尚未完成");
+
+});
 
 
 
