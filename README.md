@@ -8,7 +8,7 @@
 [Jade](http://jade-lang.com/reference/case/) -- 模板引擎  
 MongoDB  
 Linux(Ubuntu 14.04)  
-[Boostrap3](http://getbootstrap.com/getting-started/#download)(因为现在4暂时还没出)  
+[Boostrap 3.3.5](http://getbootstrap.com/getting-started/#download)(因为现在4暂时还没出)  
 jQuery  
 
 <br>
@@ -22,7 +22,6 @@ __3. 账户(可以注册，登陆. 再随便做个账户页)__
     问题详情页
     注册页
     登陆页
-
 4. 给问题下的回答点赞  
 5. 第三方登陆(QQ, 新浪微博)  
 6. 邮箱登录 - 确认邮箱  
@@ -34,38 +33,43 @@ __3. 账户(可以注册，登陆. 再随便做个账户页)__
 
 <br>
 #### 目录说明
-public/ 静态文件目录  
-    public/css/  存 css 文件  
-    public/js/  存 js 文件  
-    public/images/  网站本身的图片  
-    public/font/  bootstrap 的字体目录  
-views/  模板文件目录  
-img/  用户的图片, 比如头像等等  
+
+    public/ 静态文件目录  
+        public/css/  存 css 文件  
+        public/js/  存 js 文件  
+        public/images/  网站本身的图片  
+        public/font/  bootstrap 的字体目录  
+    views/  模板文件目录  
+    img/  用户的图片, 比如头像等等  
 
 
 <br>
 #### MongoDB 数据库设计(根据情况不断改)
 
-database name : ask-answer  
+    database name : ask-answer  
 
-collection:  
-    qa - 存问题和回答数据  
-    account - 存登陆数据(用户名, 密码, 邮箱, 各类社交平台的第三方登陆ID)  
-    user - 存用户信息(用户的名字, 比如："格拉瓦的春天". 还有性别, 等等)  
-    stat - 存统计数据, 比如每一天的问题数和用户数  
+    collection:  
+        qa - 存问题和回答数据  
+        account - 存登陆数据(用户名, 密码, 邮箱, 各类社交平台的第三方登陆ID)  
+        user - 存用户信息(用户的名字, 比如："格拉瓦的春天". 还有性别, 等等)  
+        stat - 存统计数据, 比如每一天的问题数和用户数  
+
+
 
 <br>
 #### 学到的东西 & 踩过的坑
 
 ##### 1. 如果 Express.js 用 Jade 提示失败。  
-那就是你的 Express.js 和 Jade 一个安装在本地，一个全局安装 (-g)  
-造成了这种结果。  
+那就是 Express.js 和 Jade 一个安装在本地，一个全局安装 (-g)  
+造成了这种结果  
+再安装下就好了, 比如试下 npm install jade 试下安装到本地 node_modules/ 里  
+然后再试试, 不行就再装下 Espress.js
 
 <br>
 ##### 2. Jade 的变量语法是 #{name}  
 如果要文本输出, 记得前面加个 |  
 不然 #{name} 就变成个标签了  
-比如 name = dave, 就会变成 <dave></dave>, 页面上你是看不到标签的, 看下网页源代码你就知道了  
+
 
 <br>
 ##### 2. node_module 目录不用上传  
