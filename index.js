@@ -11,10 +11,10 @@ var app = express();
 // express.js 框架
 
 var path = require('path');
-// 
+//  https://nodejs.org/docs/latest/api/path.html
 
 var session = require('express-session');
-// session
+var sess;
 
 var bodyParser = require('body-parser');
 // 拿 POST 参数
@@ -29,15 +29,31 @@ var redis = require('redis');
 // http://www.sitepoint.com/using-redis-node-js/
 
 
-
-var client  = redis.createClient('6379', '127.0.0.1');
-client.on("error", function(error) {
+var redis_client  = redis.createClient('6379', '127.0.0.1');
+redis_client.on("error", function(error) {
     console.log(error);
 });
 
 
 
+/*
 
+var RedisStore = require('connect-redis')(session);
+
+app.use(session({
+    store: new RedisStore(),
+    secret: 'keyboard cat99786'
+}));
+*/
+// 用 redis 来存 session
+// connect-redis 的 Github: https://github.com/tj/connect-redis
+// http://segmentfault.com/a/1190000002488971#articleHeader4
+// http://blog.arisetyo.com/?p=492
+
+
+// session secret
+// 我也暂时没懂, 反正是和安全相关的东西
+// http://stackoverflow.com/questions/18565512/importance-of-session-secret-key-in-express-web-framework
 
 
 
@@ -45,6 +61,16 @@ client.on("error", function(error) {
 /*
     配置
 */
+
+app.use(session({
+  secret: 'keyboard cats2',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
+
+
+
 app.use(bodyParser.json()); 
 // for parsing application/json
 
@@ -60,8 +86,7 @@ app.set('view engine', 'jade');
 // 设定静态文件目录，比如本地文件
 // 目录为demo/public/images，访问
 // 网址则显示为http://localhost:3000/images
-app.use(express.static('public'));
-
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 
@@ -104,9 +129,6 @@ app.get('/submit', function (req, res) {
 	// 因为设置了 views 变量，所以会去找 views/submit.jade
 	// 注意后缀, 用submit.html会报错
 });
-
-
-// https://mongodb.github.io/node-mongodb-native/api-articles/nodekoarticle1.html
 
 
 
@@ -178,6 +200,14 @@ app.post('/h_submit', function (req, res) {
 // 问题列表页
 app.get('/', function (req, res) {
 
+    var data = {};
+    // 这个传给 view
+
+     if (typeof sess !== 'undefined' && typeof sess.userName !== 'undefined') {
+        data.userName = sess.userName;
+     }
+
+
     // Connect to the db
     MongoClient.connect(db_url, function(err, db) {
         if(err) { return console.dir(err); }
@@ -189,10 +219,12 @@ app.get('/', function (req, res) {
           if (err) {
             console.log(err);
           } else if (result.length) {
+            data.result = result
             console.log('Found:', result);
-            res.render('display', { 'r': result });
+            res.render('display', { 'r': data });
+            
           } else {
-            res.render('display', { 'r': result });
+            res.render('display', { 'r': data });
           }
           //Close connection
           db.close();
@@ -201,7 +233,7 @@ app.get('/', function (req, res) {
         //console.log(r);
         //
     });
-
+ 
     
 });
 
@@ -209,6 +241,16 @@ app.get('/', function (req, res) {
 
 // 问题详情页
 app.get('/question/:id', function (req, res) {
+
+    var data = {};
+    // 这个传给 view
+
+
+    if (typeof sess !== 'undefined' && typeof sess.userName !== 'undefined') {
+      data.userName = sess.userName;
+    }
+    // 是否已登陆? 登陆的话拿用户名
+    
 
     var qid = req.params.id;
     // quesiton id
@@ -245,7 +287,8 @@ app.get('/question/:id', function (req, res) {
             console.log(err);
           } else if (result.length) {
             console.log('Found:', result);
-            res.render('question', { 'r': result[0] });
+            data.result = result[0];
+            res.render('question', { 'r': data });
           } else {
            // get nothing
             //res.render('display', { 'r': result });
@@ -265,8 +308,8 @@ app.get('/question/:id', function (req, res) {
 // 处理评论
 app.post('/comment', function (req, res) {
 
-     // 接收和检查问题标题
-     var c = req.body.comment;
+     // 检查参数是否足够: 评论内容(comment), 问题ID(qid)
+     var comment_content = req.body.comment;
      var qid = req.body.qid;
      if(c === '' || qid === ''){
         res.send('参数不足, 无法评论');
@@ -276,13 +319,18 @@ app.post('/comment', function (req, res) {
     qid = Number(qid);
     // MongoDB 里 qid 是数字, 这里是字符串
     // 不转类型的话数据库会找不到的
+    
+    var comment = {
+      'content' : comment_content,
+      'time' : Date.now()
+    }
      
     // 存 MongoDB
     MongoClient.connect(db_url, function(err, db) {
         if(err) { return console.dir(err); }
 
         var collection = db.collection('qa');
-        collection.update( {'qid':qid}, {$push: {comments: c}} );
+        collection.update( {'qid':qid}, {$push: {comments: comment}} );
         
     });
      
@@ -339,6 +387,9 @@ app.post('/account/handle_signup', function (req, res) {
       res.send('两次密码不一致!');
       return;
   }
+  
+  // var uid =
+  // 弄个 user id
   
   // 账户是否已经存在?
   MongoClient.connect(db_url, function(err, db) {
@@ -414,6 +465,9 @@ app.post('/account/handle_login', function (req, res) {
   password = password + salt;
   
   
+  sess=req.session;
+  
+  
   // 查 MongoDB
   MongoClient.connect(db_url, function(err, db) {
       if(err) { return console.dir(err); }
@@ -431,13 +485,20 @@ app.post('/account/handle_login', function (req, res) {
         bcrypt.compare(password, account.password, function(err, ress) {
           if(ress){
             console.log('密码正确');
+            // session 在此, 谁敢造次?
+
+            sess.already_login = 1;
+            sess.userName = account.username;
             
+            //sess.haha = {'water':'white', 'kevin':'gay'};
+            // 嵌套要这样来
             
+            console.log(sess);
             res.redirect('/');
             return;
             
           }else{
-             //console.log('密码错');
+             console.log('密码错');
              res.redirect('./login');
              return;
           }
@@ -447,16 +508,6 @@ app.post('/account/handle_login', function (req, res) {
 
    });
       
-
-    
-    
-  // 密码正确, 设置 session
-  
-  
-  
-  
-  // 密码错误, 返回登录页
-    
     
 });
 
@@ -475,13 +526,37 @@ app.get('/stat', function (req, res) {
 
 
 
+// 查看所有 session
+app.get('/session', function (req, res) {
+  
+  console.log(sess);
+  //res.write('a');
+  //res.write(sess);
+  res.send(sess);
+
+});
+
+
+
+
+// 退出
+app.get('/account/logout', function (req, res) {
+
+  sess = '';
+  res.redirect('/');
+  
+});
+
+
+
+
 // 测试页
 app.get('/test', function (req, res) {
 
     
-    var b = bcrypt.compareSync("bacon", hash);
-    res.send(hash+b);
-    return;
+  var a = req.session.haha;
+  console.log(a);
+  return;
 
 
     MongoClient.connect(db_url, function(err, db) {

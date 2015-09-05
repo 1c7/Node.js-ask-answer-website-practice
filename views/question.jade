@@ -1,15 +1,21 @@
 
-| #{r['title']}
+
+if r.userName != ''
+  | #{r.userName}
+
+<br/>
+
+| #{r.result['title']}
 
 <br>
 
-| #{r['desc']}
+| #{r.result['desc']}
 
 <br>
 
-if r['comments'] != undefined
+if r.result['comments'] != undefined
   ul
-  each val, index in r['comments']
+  each val, index in r.result['comments']
     <li>#{val}</li>
 
 
@@ -19,7 +25,7 @@ if r['comments'] != undefined
 form(action='/comment', method='post')
     textarea(placeholder='comment here', name='comment')
     br
-    <input type='hidden' name='qid' value='#{r['qid']}'>
+    <input type='hidden' name='qid' value='#{r.result['qid']}'>
     <input type='submit' value='submit'>
     
 

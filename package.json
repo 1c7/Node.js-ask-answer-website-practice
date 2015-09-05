@@ -23,6 +23,7 @@
     "multer": "~1.0.3",
     "express-session": "~1.11.3",
     "redis": "~1.0.0",
-    "connect-redis": "~2.5.0"
+    "connect-redis": "~2.5.0",
+    "redis-sessions": "~0.4.1"
   }
 }

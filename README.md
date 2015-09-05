@@ -13,16 +13,18 @@ jQuery
 
 <br>
 #### 步骤
-一步步简单来  
+一步步来(加粗代表目前的进度)  
 1. 提交问题(一个页面提交问题和问题描述，另一个页面看问题的列表)  
 2. 回答问题  
-__3. 账户(可以注册，登陆. 再随便做个账户页)__  
-4. 设计下页面
+3. 账户(可以注册，登陆, 登出)(session)  
+__4. 把回答问题功能改成必须登陆才能回答问题__  
+4. 设计
     首页问题列表
     问题详情页
     注册页
     登陆页
-4. 给问题下的回答点赞  
+4. 给回答点赞  
+4. 怎么用 redis 存 session
 5. 第三方登陆(QQ, 新浪微博)  
 6. 邮箱登录 - 确认邮箱  
 7. 找回密码  
@@ -96,6 +98,7 @@ http://stackoverflow.com/questions/15606955/how-can-i-make-git-show-a-list-of-th
 
 我这边的结果是
 
+
     1c7-server.js~
     README.md
     README.md~
@@ -135,8 +138,10 @@ http://browsenpm.org/help
 <br>
 ##### 5. 查看版本
 想看本地安装的所有包的版本, 用:
-    
+
+```javascript
     npm list --depth 0
+```
 
 来源: http://stackoverflow.com/questions/10972176/find-the-version-of-an-installed-npm-package  
 
@@ -146,30 +151,66 @@ http://browsenpm.org/help
 http://expressjs.com/4x/api.html#req.body  
 我概括下:  
 
-    npm install body-parser  
-    var bodyParser = require('body-parser');  
+```javascript
+npm install body-parser  
+var bodyParser = require('body-parser');  
+```
 
 然后接收的地方这样写:
 
+```javascript
     app.post('/handle_submit', function (req, res) {
         var t = req.body.title;
         // 拿 POST 里的 title 参数
         // 如果没传这个参数, t 会等于 ''
         res.send(t);
     });
-
+```
 
 <br>
 ##### 7. 存密码时候用 bcrypt
 我也没懂具体为啥网上推荐用 bcrypt, 有空仔细学下  
 
+```javascript
     var bcrypt = require('bcrypt-nodejs');  
     //    https://github.com/shaneGirish/bcrypt-nodejs  
-
+```
 
 
 http://codahale.com/how-to-safely-store-a-password/  
 
+
+<br>
+##### 8. Github 有自己的 Markdown 语法
+看到别人的文档都很不错, 代码有高亮  
+翻了一下居然有  
+<pre>
+```javascript
+```
+</pre>
+这种写法  
+
+全文档在这边:  
+https://help.github.com/articles/github-flavored-markdown/  
+
+
+<br>
+##### 9. middleware
+Most middleware (like session) is no longer bundled with Express and must be installed separately. Please see https://github.com/senchalabs/connect#middleware.
+
+https://github.com/senchalabs/connect#middleware
+
+<br>
+##### Express.js 4 把所有中间层(Middleware)拆出来了
+
+The bundled middleware with Express are the things we use to configure our application. They were things like bodyParser, cookieParser, session, and others.
+
+They were removed into their own modules so that they could receive fixes, updates, and releases without impacting the main express release cycles.  
+
+意思就是说把他们拆分出来之后就可以单独更新维护，  
+不用更新完这些小东西之后还得去改 Express.js 的版本号  
+
+来源：https://scotch.io/bar-talk/expressjs-4-0-new-features-and-upgrading-from-3-0
 
 
 <br/>
@@ -180,6 +221,30 @@ https://www.airpair.com/node.js/posts/nodejs-framework-comparison-express-koa-ha
 
 <br/>
 <br/>
+#### 教程
+
+##### 1. Express.js 4 和 3 的主要区别  
+https://scotch.io/bar-talk/expressjs-4-0-new-features-and-upgrading-from-3-0  
+最好扫读一下，因为网上的教程有不少都是 版本3 的.  
+然后你实际用的时候就会报错  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
