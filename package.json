@@ -17,13 +17,14 @@
   },
   "homepage": "https://github.com/1c7/ask-answer-website-practice#readme",
   "dependencies": {
-    "express": "^4.13.3",
-    "mongodb": "^2.0.42",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.13.3",
-    "multer": "~1.0.3",
-    "express-session": "~1.11.3",
-    "redis": "~1.0.0",
     "connect-redis": "~2.5.0",
+    "express": "^4.13.3",
+    "express-session": "~1.11.3",
+    "mongodb": "^2.0.42",
+    "multer": "~1.0.3",
+    "redis": "~1.0.0",
     "redis-sessions": "~0.4.1"
   }
 }
