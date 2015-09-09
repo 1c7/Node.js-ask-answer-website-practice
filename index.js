@@ -604,12 +604,54 @@ app.get('/account/logout', function (req, res) {
 });
 
 
-// 忘记密码
+// 忘记密码页
 app.get('/forget-password', function (req, res) {
 
+  // 在页面上输入账户名
+  // 提交
+  
+});
+
+// 处理-忘记密码页
+app.post('/forget-password-handle', function (req, res) {
+
+  // 接账户名
+  // 取邮箱
+  // 给邮箱发重置密码邮件
 
   
 });
+
+
+// 账户页面
+// xxx.com/profile/账户名
+// localhost:3000/profile/asdasd
+app.get('/profile/:username', function (req, res) {
+    
+    var username = req.params.username;
+    res.write(username);
+    
+    
+  /*
+  MongoClient.connect(db_url, function(err, db) {
+    if(err) { return console.dir(err); }
+
+      var collection = db.collection('user');
+      collection.findOne({'username':username}, function(err, account) {
+        console.log(account);
+        if(account == null){
+          res.send('账户不存在');
+          return;
+        }
+      }); // findOne end
+  });// MongoClient end
+  */
+
+    res.end();
+
+  
+});
+
 
 
 /* ========================================
