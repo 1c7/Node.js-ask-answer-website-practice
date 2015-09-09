@@ -2,12 +2,11 @@
 
 <br>
 #### 具体用啥？
-
+Linux(Ubuntu 14.04)  
 [Node.js](https://nodejs.org/)  
 [Express.js 4.13.3](http://expressjs.com/) -- 框架  
 [Jade](http://jade-lang.com/reference/case/) -- 模板引擎  
-MongoDB  
-Linux(Ubuntu 14.04)  
+[MongoDB](https://www.mongodb.org/)  
 [Boostrap 3.3.5](http://getbootstrap.com/getting-started/#download)(因为现在4暂时还没出)  
 jQuery  
 
@@ -18,16 +17,18 @@ jQuery
 2. 回答问题  
 3. 账户(可以注册，登陆, 登出)(session)  
 4. 问题详情页(有问题标题, 问题描述, 然后是其他人的回答)  
-4. 把回答问题功能改成必须登陆  
-__5. 问题详情页的回答不只是显示内容. 
-要相对时间(20分钟前, 2个月前, 一年前),
-鼠标放上去显示绝对时间(2015年8月18号 13:22)
+4. (2015-9-9 done)把回答问题功能改成必须登陆  
+__5. 问题详情页的回答不只是显示内容.   
+要相对时间(20分钟前, 2个月前, 一年前),  
+鼠标放上去显示绝对时间(2015年8月18号 13:22)  
 也要显示回答者的名字__  
 4. 设计
+
     首页问题列表
     问题详情页
     注册页
     登陆页
+    
 4. 给回答点赞  
 6. 给回答点踩  
 7. 取消回答的赞  
@@ -41,7 +42,7 @@ __5. 问题详情页的回答不只是显示内容.
 
 <br>
 #### 每个步骤都要考虑的
-1. 是否可能造成 XSS ?
+1. 是否可能造成 XSS ?  
 如果是, 过滤用户输入的数据  
 XSS is an output problem __not__ an input problem  
 
@@ -202,20 +203,19 @@ http://codahale.com/how-to-safely-store-a-password/
 ```javascript
 ```
 </pre>
-这种写法  
+这种写法(代码放```之间)  
 
 全文档在这边:  
 https://help.github.com/articles/github-flavored-markdown/  
 
 
 <br>
-##### 9. middleware
+##### 9. Middleware
 Most middleware (like session) is no longer bundled with Express and must be installed separately. Please see https://github.com/senchalabs/connect#middleware.
 
 https://github.com/senchalabs/connect#middleware
 
-<br>
-##### Express.js 4 把所有中间层(Middleware)拆出来了
+__Express.js 4 把所有中间层(Middleware)拆出来了__
 
 The bundled middleware with Express are the things we use to configure our application. They were things like bodyParser, cookieParser, session, and others.
 
@@ -225,6 +225,12 @@ They were removed into their own modules so that they could receive fixes, updat
 不用更新完这些小东西之后还得去改 Express.js 的版本号  
 
 来源：https://scotch.io/bar-talk/expressjs-4-0-new-features-and-upgrading-from-3-0
+
+
+<br>
+##### 11. git 只 add tracked file
+
+    git add -u
 
 
 <br/>
