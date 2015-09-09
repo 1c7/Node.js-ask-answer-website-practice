@@ -1,7 +1,6 @@
 // TODO
 /*
   1. 设计
-  2. comment 部分没有进行 XSS 过滤
   3. 注册部分，用户名没有进行限制
 */
 
@@ -36,6 +35,15 @@ redis_client.on("error", function(error) {
 });
 
 
+var moment = require('moment');
+// 一个处理时间非常方便的库
+// http://momentjs.com/docs/
+
+
+var xss = require('xss');
+// 防 XSS 攻击用
+// https://www.npmjs.com/package/xss
+
 
 /*
 
@@ -59,9 +67,11 @@ app.use(session({
 
 
 
-/*
-    配置
-*/
+/* ===========================
+
+       配置  Setting
+    
+=============================*/
 
 app.use(session({
   secret: 'keyboard cats2',
@@ -91,9 +101,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-/*
-    数据库
-*/
+/* ======================
+
+    数据库   Database
+    
+========================= */
+
 // Retrieve
 var MongoClient = require('mongodb').MongoClient;
 var db = require('mongodb').Db;
@@ -108,13 +121,16 @@ MongoClient.connect(db_url, function(err, db) {
   if(!err) {
     console.log('Successfully connect to', db_url);
   }
+  
 });
 
 
 
-/*
-    路由
-*/
+/* ======================
+
+       路由   Routing
+    
+=========================*/
 
 /*
 app.get('/', function (req, res) {
@@ -218,14 +234,18 @@ app.get('/', function (req, res) {
 
         collection.find().toArray(function (err, result) {
           if (err) {
+
             console.log(err);
+
           } else if (result.length) {
+
             data.result = result
             console.log('Found:', result);
             res.render('display', { 'r': data });
-            
+
           } else {
-            res.render('display', { 'r': data });
+            res.write('no result');
+            res.end();
           }
           //Close connection
           db.close();
@@ -244,7 +264,7 @@ app.get('/', function (req, res) {
 app.get('/question/:id', function (req, res) {
 
     var data = {};
-    // 这个传给 view
+    // 这个传给 viewanswer
 
 
     if (typeof sess !== 'undefined' && typeof sess.userName !== 'undefined') {
@@ -287,12 +307,36 @@ app.get('/question/:id', function (req, res) {
           if (err) {
             console.log(err);
           } else if (result.length) {
+          // 如果拿得到结果
+          
+            console.log(data.userName);
             console.log('Found:', result);
+            console.log(result[0].comments);
+            
+            // 把时间戳, 比如 1441763106968 变成人类可读形式: 2015年3月12号
+            result[0].comments.forEach(function(item){
+                console.log(item.time);
+                var date = moment(item.time);
+                var year = date.format('YYYY'); // YYYY == 1970 1971 ... 2029 2030
+                var month = date.format('M'); // M == 1 2 ... 11 12
+                var day = date.format('D');  // D == 1 2 ... 30 31
+                var hour = date.format('HH');  // HH == 00 01 ... 22 23
+                var minute = date.format('mm'); // mm == 00 01 ... 58 59 
+                
+                var s = date.fromNow(); // an hour ago | 29 minutes ago | a few seconds ago
+                // 这是英文的, 我们要转成中文： 一个小时前, 29分钟前
+                //moment(item.time)
+                console.log(s);
+                console.log(year+'年'+month+'月'+day+'日'+hour+':'+minute)
+            })
+            
+            
             data.result = result[0];
             res.render('question', { 'r': data });
+            
           } else {
-           // get nothing
-            //res.render('display', { 'r': result });
+            res.write('no result!!!');
+            res.end();
           }
           //Close connection
           db.close();
@@ -306,23 +350,41 @@ app.get('/question/:id', function (req, res) {
 });
 
 
-// 处理评论
-app.post('/comment', function (req, res) {
+// 回答
+app.post('/answer', function (req, res) {
 
-     // 检查参数是否足够: 评论内容(comment), 问题ID(qid)
-     var comment_content = req.body.comment;
+    console.log(typeof sess);
+    
+    // 1. 检查登陆了没有
+    if (typeof sess === undefined) {
+       res.write('你没登陆!');
+       res.end();
+    }
+    
+    if (typeof sess !== 'undefined' && typeof sess.userName !== 'undefined') {
+      //data.userName = sess.userName;
+    }
+
+    // 2. 检查参数是否足够: 回答内容(answer), 问题ID(qid)
+     var answer = req.body.answer;
      var qid = req.body.qid;
-     if(c === '' || qid === ''){
-        res.send('参数不足, 无法评论');
+     if(answer === '' || qid === ''){
+        res.send('参数不足, 无法回答');
         return;
      }
-     
+    
+    
+    
+    var answer = xss(answer);
+    // 把回答过滤一下，防 XSS 攻击
+
+
     qid = Number(qid);
     // MongoDB 里 qid 是数字, 这里是字符串
     // 不转类型的话数据库会找不到的
     
     var comment = {
-      'content' : comment_content,
+      'content' : answer,
       'time' : Date.now()
     }
      
@@ -340,11 +402,19 @@ app.post('/comment', function (req, res) {
 });
 
 
+// 给回答点赞
+app.get('/answer-upvote', function (req, res) {
+    res.write("asdasd");
+    res.end();
+});
 
+// 给回答点踩
+app.get('/answer-downvote', function (req, res) {
+    res.write("asdasd");
+    res.end();
+});
 
-
-
-
+// 取消赞和踩先不管
 
 
 
@@ -389,8 +459,16 @@ app.post('/account/handle_signup', function (req, res) {
       return;
   }
   
+  // 对用户名进行操作
+  // 检查用户名是否合法，
+  // 用户名中不允许的字符是:
+  
+  
   // var uid =
   // 弄个 user id
+  
+  
+ 
   
   // 账户是否已经存在?
   MongoClient.connect(db_url, function(err, db) {
@@ -415,9 +493,10 @@ app.post('/account/handle_signup', function (req, res) {
               var creationDate = Date.now();
   
               var doc = {
-                'username':username, 
-                'password':password,
-                'creationDate':creationDate
+                // 'userID' : 
+                'username' : username, 
+                'password' : password,
+                'creationDate' : creationDate
               };
 
               collection.insert(doc);
@@ -477,6 +556,7 @@ app.post('/account/handle_login', function (req, res) {
 
       collection.findOne({'username':username}, function(err, account) {
 
+        console.log(account);
         if(account == null){
           res.send('账户不存在');
           return;
@@ -490,6 +570,7 @@ app.post('/account/handle_login', function (req, res) {
 
             sess.already_login = 1;
             sess.userName = account.username;
+            //sess.qid = account.username;
             
             //sess.haha = {'water':'white', 'kevin':'gay'};
             // 嵌套要这样来
@@ -514,6 +595,47 @@ app.post('/account/handle_login', function (req, res) {
 
 
 
+// 退出
+app.get('/account/logout', function (req, res) {
+
+  sess = '';
+  res.redirect('/');
+  
+});
+
+
+// 忘记密码
+app.get('/forget-password', function (req, res) {
+
+
+  
+});
+
+
+/* ========================================
+
+    后台
+
+========================================== */
+
+
+app.get('/42admin', function (req, res) {
+
+
+});
+
+
+app.get('/42admin/handle_login', function (req, res) {
+
+
+});
+
+
+app.get('/42admin/handle_logout', function (req, res) {
+
+
+});
+
 // 统计页
 /*
   1. 有多少个问题
@@ -526,33 +648,22 @@ app.get('/stat', function (req, res) {
 });
 
 
+/* ========================================
 
-// 查看所有 session
-app.get('/session', function (req, res) {
-  
-  console.log(sess);
-  //res.write('a');
-  //res.write(sess);
-  res.send(sess);
+    下面是帮忙测试的一些函数, 上线时要删掉
 
-});
-
-
-
-
-// 退出
-app.get('/account/logout', function (req, res) {
-
-  sess = '';
-  res.redirect('/');
-  
-});
-
-
-
+========================================== */
 
 // 测试页
 app.get('/test', function (req, res) {
+
+
+// 测XSS的
+/*
+var html = xss('<script>alert("xss");</script>');
+console.log(html);
+return;
+*/
 
     
   var a = req.session.haha;
@@ -585,14 +696,25 @@ app.get('/test', function (req, res) {
 });
 
 
+// 查看所有 session
+app.get('/session', function (req, res) {
+  
+  console.log(sess);
+  //res.write('a');
+  //res.write(sess);
+  res.send(sess);
+
+});
 
 
 
 
 
+/* ========================================
 
-// ==============================================
+    服务器, 我以代码之名启动你
 
+========================================== */
 
 var server = app.listen(3000, function () {
   var host = server.address().address;
@@ -603,6 +725,7 @@ var server = app.listen(3000, function () {
 
 
 
+// 判断是否数字
 function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
