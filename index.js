@@ -35,6 +35,9 @@ redis_client.on("error", function(error) {
     console.log(error);
 });
 
+var sass = require('node-sass');
+
+
 
 
 /*
@@ -63,6 +66,7 @@ app.use(session({
     配置
 */
 
+// SESSION
 app.use(session({
   secret: 'keyboard cats2',
   resave: false,
@@ -70,6 +74,17 @@ app.use(session({
   cookie: { secure: true }
 }))
 
+
+// CSS SASS
+app.use(
+     sass.middleware({
+         src: __dirname + '/public/sass/', //where the sass files are 
+         dest: __dirname + '/public/css/', //where css should go
+         debug: true, // obvious
+         outputStyle: 'compressed'
+     })
+ );
+// http://www.pranavpiyush.com/setting-up-sass-with-express/
 
 
 app.use(bodyParser.json()); 

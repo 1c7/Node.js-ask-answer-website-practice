@@ -42,11 +42,13 @@ XSS is an output problem __not__ an input problem
 <br>
 #### 目录说明
 
-    public/ 静态文件目录  
-        public/css/  存 css 文件  
-        public/js/  存 js 文件  
+    public/ 资源文件目录  
+        public/css/  存 css 文件(sass 编译后的)  
+        public/js/  存 js 文件(压缩后的 js)  
         public/images/  网站本身的图片  
-        public/font/  bootstrap 的字体目录  
+        public/sass/  CSS 预处理的目录(可读的 sass)
+        public/readable-js/  可读的 js, js 都再这里面写, 压缩之后放 js/目录
+        public/font/  bootstrap 的字体目录 
     views/  模板文件目录  
     img/  用户的图片, 比如头像等等  
 
