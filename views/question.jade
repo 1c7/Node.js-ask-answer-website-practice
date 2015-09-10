@@ -1,8 +1,10 @@
+<a href='/'>首页</a>
+<br/>
 
+if r.userName != undefined
+  | 用户名 #{r.userName}
 
-if r.userName != ''
-  | #{r.userName}
-
+<br/>
 <br/>
 
 | #{r.result['title']}
@@ -16,18 +18,46 @@ if r.userName != ''
 if r.result['comments'] != undefined
   ul
   each val, index in r.result['comments']
-    <li>#{val}</li>
+    <li>#{val.content}</li>
+
+
+
+<style>
+
+</style>
+
+<div>
+xxx 写于 30分钟前(鼠标悬浮显示 2015年3月18日 18:32)
+<br>
+内容
+</div>
 
 
 
 <br>
 <br>
-form(action='/comment', method='post')
-    textarea(placeholder='comment here', name='comment')
-    br
-    <input type='hidden' name='qid' value='#{r.result['qid']}'>
-    <input type='submit' value='submit'>
-    
+if r.userName != undefined
+    form(action='/answer', method='post')
+        textarea(placeholder='answer here', name='answer')
+        br
+        <input type='hidden' name='qid' value='#{r.result['qid']}'>
+        <input type='submit' value='submit'>
+else
+    <a href='/account/login'>登陆</a>后才可以发表评论. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
