@@ -22,11 +22,14 @@
     "connect-redis": "~2.5.0",
     "express": "^4.13.3",
     "express-session": "~1.11.3",
-    "moment": "^2.10.6",
+    "moment": "~2.10.6",
     "mongodb": "^2.0.42",
     "multer": "~1.0.3",
     "redis": "~1.0.0",
     "redis-sessions": "~0.4.1",
-    "xss": "^0.2.7"
+    "xss": "~0.2.7",
+    "node-sass": "~3.3.2",
+    "less-middleware": "~2.0.1",
+    "normalize.css": "~3.0.3"
   }
 }

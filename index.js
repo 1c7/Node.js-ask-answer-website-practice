@@ -22,17 +22,18 @@ var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt-nodejs');
 // 加密密码用的  https://github.com/shaneGirish/bcrypt-nodejs
 
-var redis = require('redis');
+// var redis = require('redis');
 // 内存数据库
 // 别忘了 redis 是一个, nodejs 这边的 redis 交互又是一个, 两码事
 // https://cnodejs.org/topic/5200755c44e76d216a1620df
 // http://www.sitepoint.com/using-redis-node-js/
 
-
+/*
 var redis_client  = redis.createClient('6379', '127.0.0.1');
 redis_client.on("error", function(error) {
     console.log(error);
 });
+*/
 
 var sass = require('node-sass');
 
@@ -85,16 +86,13 @@ app.use(session({
 }))
 
 
-// CSS SASS
-app.use(
-     sass.middleware({
-         src: __dirname + '/public/sass/', //where the sass files are 
-         dest: __dirname + '/public/css/', //where css should go
-         debug: true, // obvious
-         outputStyle: 'compressed'
-     })
- );
-// http://www.pranavpiyush.com/setting-up-sass-with-express/
+var lessMiddleware = require('less-middleware');
+app.use(lessMiddleware(__dirname + '/public', {'debug':true}));
+//app.use(express.static(__dirname + '/public'));
+// https://github.com/emberfeather/less.js-middleware
+
+
+
 
 
 app.use(bodyParser.json()); 
@@ -714,7 +712,14 @@ app.get('/stat', function (req, res) {
 // 测试页
 app.get('/test', function (req, res) {
 
+  res.render('haha', { title: 'Hey', message2: 'Hello there!'});
 
+
+  //res.write('asdas');
+  //res.end();
+  //res.sendFile(path.join(__dirname + '/views/haha.html'));
+    //res.sendFile(path.join(__dirname + '/haha.html'));
+return;
 // 测XSS的
 /*
 var html = xss('<script>alert("xss");</script>');

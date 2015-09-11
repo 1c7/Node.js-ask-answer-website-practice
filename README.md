@@ -52,11 +52,9 @@ XSS is an output problem __not__ an input problem
 #### 目录说明
 
     public/ 资源文件目录  
-        public/css/  存 css 文件(sass 编译后的)  
-        public/js/  存 js 文件(压缩后的 js)  
+        public/css/  存 css 文件
+        public/js/  存 js 文件
         public/images/  网站本身的图片  
-        public/sass/  CSS 预处理的目录(可读的 sass)
-        public/readable-js/  可读的 js, js 都再这里面写, 压缩之后放 js/目录
         public/font/  bootstrap 的字体目录 
     views/  模板文件目录  
     img/  用户的图片, 比如头像等等  
@@ -234,10 +232,25 @@ They were removed into their own modules so that they could receive fixes, updat
 
     git add -u
 
+<br>
+##### 12. 安装模块安装不上, 用sudo 也不行，而且报错  
+This failure might be due to the use of legacy binary "node"  
 
-<br/>
-#### 框架比较
-https://www.airpair.com/node.js/posts/nodejs-framework-comparison-express-koa-hapi
+  sudo apt-get install nodejs-legacy
+
+http://stackoverflow.com/questions/21168141/can-not-install-packages-using-node-package-manager-in-ubuntu  
+
+
+<br>
+##### 13. node.js 安装  
+https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server
+
+<br>
+##### 14. node.js 用 less
+下次写
+
+<br>
+##### 15. 留空占位
 
 
 
@@ -249,6 +262,11 @@ https://www.airpair.com/node.js/posts/nodejs-framework-comparison-express-koa-ha
 https://scotch.io/bar-talk/expressjs-4-0-new-features-and-upgrading-from-3-0  
 最好扫读一下，因为网上的教程有不少都是 版本3 的.  
 然后你实际用的时候就会报错  
+
+#### 2. 框架比较
+https://www.airpair.com/node.js/posts/nodejs-framework-comparison-express-koa-hapi
+
+
 
 
 
