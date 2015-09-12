@@ -92,6 +92,12 @@ div{
   left:0px;
   background-color: rgba(0, 0, 0, 0.8);
  
+  textarea{
+    width: 442px;
+    height: 76px;
+    margin: 0 auto;
+  }
+  
   #q_box{
     width: 493px;
     height: 246px;
@@ -103,11 +109,57 @@ div{
     border-radius: 4px;
     /*z-index: 999;*/
     /* background-color: #f7faff; */
-    background-color: #f96;
+    background-color: #f7faff;
     /* box-shadow: ....*/
     opacity: 1;
   }
+  
+  #q_title{
+    /* background-color: #f33; */
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+   
+  }
+  
+  #q_close{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    
+  }
+  
+  #q_next{ /* 下一步 */
+    width: 136px;
+    height: 32px;
+    background-color: #f7af63;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    line-height: 32px;
+    text-align: center;
+    box-shadow: 1px 3px 0px #8f500b;
+    margin: 0 auto;
+    
+     transition: all .3s; 
+    -moz-transition: all .3s; /* Firefox 4 */
+    -webkit-transition: all .3s; /* Safari and Chrome */
+    -o-transition: all .3s; /* Opera */
+       
+    position: absolute;
+    bottom: 21px;
+    left: 50%;
+    margin-left: -68px;
+    
+  }
+  
+  #q_next:hover{
+    /* box-shadow: 1px 3px 0px #8f500b;
+    bottom: 13px;*/
+  }
 }
+
+
 
 
 
