@@ -39,11 +39,11 @@
 </div>
 -->
 
-<div id='new_question' style='display:block;'>
+<div id='new_question' style='display:none;'>
   <div id='q_box'>
   <div id='q_title'>提问</div>
   <div id='q_close'>x</div>
-  <textarea resizeable='false'>
+  <textarea id='q_content' resizeable='false'>
   </textarea>
   <div id='q_next'>下一步</div>
   </div>
@@ -51,9 +51,64 @@
 
 <script>
 $(function(){
-  $('#ask-q').click(function(){
+
+  
+    $.ajax({
+      method: "POST",
+      url: "/ajax-index",
+      context: document.body,
+    }).done(function(r) {
+       //console.log(r);
+       var j = JSON.parse(r);
+       for(var k in j) {
+           console.log(k, j[k]);
+        }
+    });
+
+
+
+
+  // 点击提交, 显示窗口
+  $('#ask-q').click(function(event){
     $('#new_question').show();
   });
+  
+  // 点击背景隐藏窗口
+  $('#new_question').click(function(event){
+    $('#new_question').hide();
+  });
+  
+  // 只要点击事件不冒泡, 就可以做到点击背景隐藏窗口, 
+  // 但是点击窗口不会误触发隐藏事件.
+  $('#q_box').click(function(event){
+    event.stopPropagation();
+  });
+  
+  
+  // 提交问题
+  $('#q_next').click(function(event){
+     var c = $('#q_content').val();
+     if($.trim(c) == ''){
+        alert("问题不能为空");
+        return;
+     }
+     
+    //  http://api.jquery.com/jquery.ajax/
+    $.ajax({
+      method: "POST",
+      url: "/h_submit",
+      context: document.body,
+      data: { title: c }
+    }).done(function() {
+      $( this ).addClass( "done" );
+    });
+     
+     
+     
+  });
+  
+  
+   
 });
 </script>
 

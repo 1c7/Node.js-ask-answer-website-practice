@@ -180,12 +180,12 @@ app.post('/h_submit', function (req, res) {
      
      
      // 问题描述
-     var d = req.body.desc;
-     if( d == ''){
+     //var d = req.body.desc;
+     //if( d == ''){
         var doc = {'title':t}
-     }else{
-        var doc = {'title':t, 'desc':d}
-     }
+     //}else{
+     //  var doc = {'title':t, 'desc':d}
+     //}
 
 
     // 生成一个问题ID, 问题详情页需要用到
@@ -239,9 +239,10 @@ app.get('/', function (req, res) {
     var data = {};
     // 这个传给 view
 
-     if (typeof sess !== 'undefined' && typeof sess.userName !== 'undefined') {
+  if (typeof sess !== 'undefined' 
+    && typeof sess.userName !== 'undefined') {
         data.userName = sess.userName;
-     }
+  }
 
 
     // Connect to the db
@@ -715,12 +716,54 @@ app.get('/stat', function (req, res) {
 
 ========================================== */
 
+
+// ajax拿首页
+app.post('/ajax-index', function (req, res) {
+
+
+   // Connect to the db
+    MongoClient.connect(db_url, function(err, db) {
+        if(err) { return console.dir(err); }
+
+        //var r = db.qa.find();
+        var collection = db.collection('qa');
+
+        collection.find().toArray(function (err, result) {
+          if (err) {
+
+            console.log(err);
+
+          } else if (result.length) {
+
+            console.log('Found:', result);
+            res.write( JSON.stringify(result) );
+            res.end();
+
+          } else {
+            res.write('no result');
+            res.end();
+          }
+          //Close connection
+          db.close();
+        });
+    
+        //console.log(r);
+        //
+    });
+
+});
+
+
+
+
 // 测试页
 app.get('/test', function (req, res) {
 
+
 fs.readFile('views/haha.jade', 'utf-8', function(error, source){
   var template = handlebars.compile(source);
-  var html = template(data);
+  //var html = template(data);
+  var html = template();
   res.write(html);
   res.end();
 });
