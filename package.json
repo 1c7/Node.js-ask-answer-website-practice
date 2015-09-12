@@ -30,6 +30,7 @@
     "xss": "~0.2.7",
     "node-sass": "~3.3.2",
     "less-middleware": "~2.0.1",
-    "normalize.css": "~3.0.3"
+    "normalize.css": "~3.0.3",
+    "handlebars": "~4.0.2"
   }
 }
