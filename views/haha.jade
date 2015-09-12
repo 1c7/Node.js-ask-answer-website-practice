@@ -1,3 +1,8 @@
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+
 
 <script src="js/jquery-2.1.4.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/normalize.css">
@@ -5,48 +10,49 @@
 <!-- <script src="js/index.js"></script> -->
 
 <div id='left'>
-<div id='title'>
-社区
-</div>
+  <div id='title'>社区</div>
 </div>
 
 
 
 <div id='middle'>
-<div id='middle-top'>
-<div id='ask-q'>
-提问
+
+  <div id='middle-top'>
+    <div id='ask-q'>
+    提问
+    </div>
+  </div>
+  
+  <article id='q'>
+    <section>问题标题</section>
+    <section>票数，头像</section>
+    <section>回答</section>
+  <article>
+  
 </div>
+
+
+<!--
+<div id='profile'>
+头像，名字，通知
+<div id='name'>王可可</div>
 </div>
-<article id='q'>
-<section>问题标题</section>
-<section>票数，头像</section>
-<section>回答</section>
-<article>
-</div>
-
-
-
-//<div id='profile'>
-//头像，名字，通知
-//<div id='name'>王可可</div>
-//</div>
-
+-->
 
 <div id='new_question' style='display:block;'>
-<div id='q_box'>
-<div id='q_title'>提问</div>
-<textarea resizeable='false'>
-</textarea>
-<input type='submit' id='question_next' value='下一步'>
-</div>
+  <div id='q_box'>
+  <div id='q_title'>提问2</div>
+  <textarea resizeable='false'>
+  </textarea>
+  <input type='submit' id='question_next' value='下一步'>
+  </div>
 </div>
 
 <script>
 $(function(){
-$('#ask-q').click(function(){
-$('#new_question').show();
-});
+  $('#ask-q').click(function(){
+    $('#new_question').show();
+  });
 });
 </script>
 

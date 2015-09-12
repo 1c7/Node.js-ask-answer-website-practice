@@ -718,7 +718,22 @@ app.get('/stat', function (req, res) {
 // 测试页
 app.get('/test', function (req, res) {
 
+fs.readFile('views/haha.jade', 'utf-8', function(error, source){
+  var template = handlebars.compile(source);
+  var html = template(data);
+  res.write(html);
+  res.end();
+});
 
+  
+
+//res.render('haha', { title: 'Hey', message2: 'Hello there!'});
+
+return;
+
+
+
+// handlebars
 var data = { "name": "Alan", "hometown": "Somewhere, TX",
              "kids": [{"name": "Jimmy", "age": "12"}, {"name": "Sally", "age": "4"}]};
 
@@ -733,15 +748,9 @@ fs.readFile('views/mush.html', 'utf-8', function(error, source){
 
 
 
-  //var template = handlebars.compile(source);
-  //var html = template(data);
 
-  // try masutch template engine
-  // mush
-  
-  return;
 
-  //res.render('haha', { title: 'Hey', message2: 'Hello there!'});
+
 
 
   //res.write('asdas');

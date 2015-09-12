@@ -5,10 +5,15 @@
 Linux(Ubuntu 14.04)  
 [Node.js](https://nodejs.org/)  
 [Express.js 4.13.3](http://expressjs.com/) -- 框架  
-[Jade](http://jade-lang.com/reference/case/) -- 模板引擎  
+[handlebars](https://www.npmjs.com/package/handlebars) -- 模板引擎  
+Jade 用过一阵子, 缩进(indent)太烦人了, 只能换掉.  
 [MongoDB](https://www.mongodb.org/)  
 [Boostrap 3.3.5](http://getbootstrap.com/getting-started/#download)(因为现在4暂时还没出)  
 jQuery  
+redis  
+moment.js  
+LESS  
+
 
 <br>
 #### 步骤
