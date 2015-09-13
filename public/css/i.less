@@ -3,21 +3,26 @@ body {
   display: flex; /* or inline-flex */
   flex-direction: row;
 }
-div{
-  h1{
-    color:green;
-  }
-}
+
 
 #left{
   width: 158px;
-  /* height: 100%; */
+  height: 100%; 
   background-color:#34495e;
   /* display:inline-block; */
+  
+  a{
+    text-decoration: none;
+  }
+  
+  #title{
+    /* background-color:#f96; */
+    padding-bottom: 20px;
+  }
 }
 
 #middle{
-  width:60%;
+  width: 53%;
   /* height: 100%; */
   /* background-color:#f99; */
   /* display:inline-block; */
@@ -71,22 +76,23 @@ div{
   }
   
   .q_info{
-    margin-bottom: 9px;
+    margin-bottom: 11px;
     
     .q_vote{
         font-size: 12px;
         width: 40px;
         height: 20px;
-        border: 1px solid red;
-        border-radius: 2px;
+        border: 1px solid #26bf92;
+        border-radius: 4px;
         padding: 3px 10px;
         margin-right: 10px;
+        color: #26bf92;
     }
   }
   
   .q_a{
     cursor: pointer;
-  
+    font-size: 14px;
   }
   
 }
@@ -128,12 +134,15 @@ div{
   -o-transition: all .3s; /* Opera */
     
   textarea{
-    display:block;
+    display: block;
     width: 442px;
     height: 76px;
     margin: 0 auto;
-    margin-top: 12px;
+    margin-top: 28px;
     resize: none;
+    padding: 5px;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 4px;
   }
   
   #q_box{
@@ -157,13 +166,15 @@ div{
     height: 40px;
     line-height: 40px;
     text-align: center;
-   
+    font-size:16px;
+    padding-top:9px;
   }
   
   #q_close{
     position: absolute;
-    top: 0px;
-    right: 0px;
+    top: 14px;
+    right: 19px;
+    cursor:pointer;
     
   }
   
@@ -185,7 +196,7 @@ div{
     -o-transition: all .3s; /* Opera */
        
     position: absolute;
-    bottom: 21px;
+    bottom: 20px;
     left: 50%;
     margin-left: -68px;
     
@@ -198,7 +209,25 @@ div{
 }
 
 
-
+#right{
+  /* background-color:#f87; */
+  width: 21%;
+  height: 100%;
+  position: absolute;
+  right: 12px;;
+  
+  #best_answer{
+    margin-top: 220px;
+    background-color: #e2e2e2;
+    border-radius:5px;
+    width: 100%;
+    height: 72px;
+    line-height: 72px;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+}
 
 
 

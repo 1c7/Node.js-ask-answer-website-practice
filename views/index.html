@@ -1,29 +1,33 @@
 <html>
+
 <head>
 <meta charset="UTF-8">
-</head>
-
-
 <script src="js/jquery-2.1.4.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/normalize.css">
 <link rel="stylesheet" type="text/css" href="css/i.css">
 <!-- <script src="js/index.js"></script> -->
+</head>
+
+
+
 
 <div id='left'>
+  <a href='/test'>
   <div id='title'>社区</div>
+  </a>
 </div>
 
 
 
 <div id='middle'>
-
+<!-- 问题+回答,  只有问题,  应该是两种样式 -->
   <div id='middle-top'>
     <div id='ask-q'>
     提问
     </div>
   </div>
   
-  <article class='q'>
+  <article class='q' style='display:none;'>
     <section class='q_title'>
     <a href='/question/1441438338875'>
       经常健身的人，跟健身前比有什么差别？
@@ -36,18 +40,16 @@
     <section class='q_a'>当反应堆出现异常工况时不依靠人为操作或外部设备的强制干预，只有反应堆自然安全性（堆功率的负反馈）和非能动的安全性（无需外部动力设备的安全性），控制反应性或移出堆芯热量，使反应堆趋于正常运行和安全停闭。高温气冷堆的燃料元件是弥散在石..</section>
   </article>
   
-  
-    <article class='q'>
-    <section class='q_title'>经常健身的人，跟健身前比有什么差别？</section>
-    <section class='q_info'>
-      <span class='q_vote'></span>
-      <span class='q_name'></span>
-    </section>
-    <section class='q_a'></section>
-  </article>
-  
-  
+
 </div>
+
+<!--
+<div id='right'>
+  <div id='best_answer'>
+    最佳答案广场
+  </div>
+</div>
+-->
 
 
 <!--
@@ -60,7 +62,9 @@
 <div id='new_question' style='display:none;'>
   <div id='q_box'>
   <div id='q_title'>提问</div>
-  <div id='q_close'>x</div>
+  <div id='q_close'>
+    <img src="img/close.png">
+  </div>
   <textarea id='q_content' resizeable='false'>
   </textarea>
   <div id='q_next'>下一步</div>
@@ -77,9 +81,28 @@ $(function(){
       context: document.body,
     }).done(function(r) {
        //console.log(r);
+       // 先处理成功情况，拿不到数据的情况再说。
+       
+
+       
        var j = JSON.parse(r);
        for(var k in j) {
-           console.log(k, j[k]);
+          var title = j[k].title;
+          var qid = j[k].qid;
+          var desc = j[k].desc;
+          var comments = j[k].comments;
+          console.log(comments);
+          
+          //console.log(title);
+          //console.log(k, j[k]);
+          var c = $('article.q').first().clone();
+          c.find('section.q_title a').text(title);
+          c.find('section.q_title a').attr('href', '/question/'+qid);
+          c.find('section.q_info').remove();
+          c.find('section.q_a').remove();
+          c.show();
+          $('#middle').append(c);           
+           
         }
     });
 
@@ -96,6 +119,12 @@ $(function(){
     $('#new_question').hide();
   });
   
+  // 点击叉叉关闭窗口
+  $('#q_close').click(function(event){
+    $('#new_question').hide();
+  });  
+  
+  
   // 只要点击事件不冒泡, 就可以做到点击背景隐藏窗口, 
   // 但是点击窗口不会误触发隐藏事件.
   $('#q_box').click(function(event){
@@ -110,7 +139,10 @@ $(function(){
         alert("问题不能为空");
         return;
      }
-     
+    
+    // loading animation
+    
+    
     //  http://api.jquery.com/jquery.ajax/
     $.ajax({
       method: "POST",
@@ -131,7 +163,8 @@ $(function(){
 </script>
 
 
-
+</body>
+</html>
 
 
 

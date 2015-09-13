@@ -147,15 +147,67 @@ MongoClient.connect(db_url, function(err, db) {
 
 /* ======================
 
-       路由   Routing
+     路由   Routing
     
 =========================*/
 
-/*
+
+
+// 问题列表页
 app.get('/', function (req, res) {
-  res.send('Hello World!');
+
+  fs.readFile('views/index.html', 'utf-8', function(error, source){
+    var template = handlebars.compile(source);
+    //var html = template(data);
+    var html = template();
+    res.write(html);
+    res.end();
+  });
+
+
+    var data = {};
+    // 这个传给 view
+
+  if (typeof sess !== 'undefined' 
+    && typeof sess.userName !== 'undefined') {
+        data.userName = sess.userName;
+  }
+
+
+    // Connect to the db
+    MongoClient.connect(db_url, function(err, db) {
+        if(err) { return console.dir(err); }
+
+        //var r = db.qa.find();
+        var collection = db.collection('qa');
+
+        collection.find().toArray(function (err, result) {
+          if (err) {
+
+            console.log(err);
+
+          } else if (result.length) {
+
+            data.result = result
+            console.log('Found:', result);
+            res.render('display', { 'r': data });
+
+          } else {
+            res.write('no result');
+            res.end();
+          }
+          //Close connection
+          db.close();
+        });
+    
+        //console.log(r);
+        //
+    });
+ 
+    
 });
-*/
+
+
 
 // 提交页面
 app.get('/submit', function (req, res) {
@@ -233,55 +285,17 @@ app.post('/h_submit', function (req, res) {
 
 
 
-// 问题列表页
-app.get('/', function (req, res) {
-
-    var data = {};
-    // 这个传给 view
-
-  if (typeof sess !== 'undefined' 
-    && typeof sess.userName !== 'undefined') {
-        data.userName = sess.userName;
-  }
-
-
-    // Connect to the db
-    MongoClient.connect(db_url, function(err, db) {
-        if(err) { return console.dir(err); }
-
-        //var r = db.qa.find();
-        var collection = db.collection('qa');
-
-        collection.find().toArray(function (err, result) {
-          if (err) {
-
-            console.log(err);
-
-          } else if (result.length) {
-
-            data.result = result
-            console.log('Found:', result);
-            res.render('display', { 'r': data });
-
-          } else {
-            res.write('no result');
-            res.end();
-          }
-          //Close connection
-          db.close();
-        });
-    
-        //console.log(r);
-        //
-    });
- 
-    
-});
 
 
 
 // 问题详情页
 app.get('/question/:id', function (req, res) {
+
+/*
+res.write('asd');
+res.end();
+return;
+*/
 
     var data = {};
     // 这个传给 viewanswer
@@ -332,23 +346,26 @@ app.get('/question/:id', function (req, res) {
             console.log(data.userName);
             console.log('Found:', result);
             console.log(result[0].comments);
+            if(result[0].comments != undefined){
+               // 把时间戳, 比如 1441763106968 变成人类可读形式: 2015年3月12号
+              result[0].comments.forEach(function(item){
+                  console.log(item.time);
+                  var date = moment(item.time);
+                  var year = date.format('YYYY'); // YYYY == 1970 1971 ... 2029 2030
+                  var month = date.format('M'); // M == 1 2 ... 11 12
+                  var day = date.format('D');  // D == 1 2 ... 30 31
+                  var hour = date.format('HH');  // HH == 00 01 ... 22 23
+                  var minute = date.format('mm'); // mm == 00 01 ... 58 59 
+                  
+                  var s = date.fromNow(); // an hour ago | 29 minutes ago | a few seconds ago
+                  // 这是英文的, 我们要转成中文： 一个小时前, 29分钟前
+                  //moment(item.time)
+                  console.log(s);
+                  console.log(year+'年'+month+'月'+day+'日'+hour+':'+minute)
+              })           
             
-            // 把时间戳, 比如 1441763106968 变成人类可读形式: 2015年3月12号
-            result[0].comments.forEach(function(item){
-                console.log(item.time);
-                var date = moment(item.time);
-                var year = date.format('YYYY'); // YYYY == 1970 1971 ... 2029 2030
-                var month = date.format('M'); // M == 1 2 ... 11 12
-                var day = date.format('D');  // D == 1 2 ... 30 31
-                var hour = date.format('HH');  // HH == 00 01 ... 22 23
-                var minute = date.format('mm'); // mm == 00 01 ... 58 59 
-                
-                var s = date.fromNow(); // an hour ago | 29 minutes ago | a few seconds ago
-                // 这是英文的, 我们要转成中文： 一个小时前, 29分钟前
-                //moment(item.time)
-                console.log(s);
-                console.log(year+'年'+month+'月'+day+'日'+hour+':'+minute)
-            })
+            }
+
             
             
             data.result = result[0];
@@ -760,13 +777,7 @@ app.post('/ajax-index', function (req, res) {
 app.get('/test', function (req, res) {
 
 
-fs.readFile('views/haha.jade', 'utf-8', function(error, source){
-  var template = handlebars.compile(source);
-  //var html = template(data);
-  var html = template();
-  res.write(html);
-  res.end();
-});
+
 
   
 
