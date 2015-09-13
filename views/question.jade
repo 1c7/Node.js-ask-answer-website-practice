@@ -1,63 +1,48 @@
-<a href='/'>首页</a>
-<br/>
+<html>
 
-if r.userName != undefined
-  | 用户名 #{r.userName}
-
-<br/>
-<br/>
-
-| #{r.result['title']}
-
-<br>
-
-| #{r.result['desc']}
-
-<br>
-
-if r.result['comments'] != undefined
-  ul
-  each val, index in r.result['comments']
-    <li>#{val.content}</li>
+<head>
+<meta charset="UTF-8">
+<base href="/">
+<script src="js/jquery-2.1.4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<link rel="stylesheet" type="text/css" href="css/q.css">
+</head>
 
 
 
-<style>
-
-</style>
-
-<div>
-xxx 写于 30分钟前(鼠标悬浮显示 2015年3月18日 18:32)
-<br>
-内容
+<div id='left'>
+  <a href='/'>
+  <div id='title'>社区</div>
+  </a>
 </div>
 
 
 
-<br>
-<br>
-if r.userName != undefined
-    form(action='/answer', method='post')
-        textarea(placeholder='answer here', name='answer')
-        br
-        <input type='hidden' name='qid' value='#{r.result['qid']}'>
-        <input type='submit' value='submit'>
-else
-    <a href='/account/login'>登陆</a>后才可以发表评论. 
+<div id='middle'>
+  <div id='q_title'>
+    当下流行的健身方式中有哪些是错误的？
+  </div>
+  
+  
+  
+  <textarea id='q_answer_box'>
+  </textarea>
+  
+  <input id='q_answer_button' type='submit' value='回答'>
+  
+</div>
 
 
 
+<script>
+$(function(){
 
 
+   
+});
+</script>
 
 
-
-
-
-
-
-
-
-
-
+</body>
+</html>
 

@@ -369,7 +369,17 @@ return;
             
             
             data.result = result[0];
-            res.render('question', { 'r': data });
+            //res.render('question', { 'r': data });
+            
+            
+            fs.readFile('views/question.jade', 'utf-8', function(error, source){
+              var template = handlebars.compile(source);
+              var html = template(data);
+              res.write(html);
+              res.end();
+            });
+            
+            
             
           } else {
             res.write('no result!!!');
@@ -456,15 +466,17 @@ app.get('/answer-downvote', function (req, res) {
 
 
 // 注册账户页面
-app.get('/account/signup', function (req, res) {
-    //res.render('signup');
-    
-res.set({
-  'Content-Type': 'text/html'
-});
+app.get('/signup', function (req, res) {
 
-    // set http header
-    res.sendfile('./views/signup.jade');
+
+  fs.readFile('views/signup.jade', 'utf-8', function(error, source){
+    var template = handlebars.compile(source);
+    //var html = template(data);
+    var html = template();
+    res.write(html);
+    res.end();
+  });
+
 });
 
 
@@ -554,12 +566,12 @@ app.post('/account/handle_signup', function (req, res) {
 
 
 // 登陆页面
-app.get('/account/login', function (req, res) {
+app.get('/login', function (req, res) {
 
   res.set({
     'Content-Type': 'text/html'
   });
-    res.sendfile('./views/login.jade');
+    res.sendFile('./views/login.jade');
     
 });
 
