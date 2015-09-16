@@ -6,6 +6,8 @@
 <script src="js/jquery-2.1.4.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/normalize.css">
 <link rel="stylesheet" type="text/css" href="css/q.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+
 </head>
 
 
@@ -19,16 +21,26 @@
 
 
 <div id='middle'>
-  <div id='q_title'>
-    当下流行的健身方式中有哪些是错误的？
+
+  <div id='q_box'>
+    <div id='q_title'>
+      {{title}}
+    </div>
+    
+    <div id='q_desc'>
+      {{desc}}
+      {{content}}
+    </div>
   </div>
-  
   
   
   <textarea id='q_answer_box'>
   </textarea>
   
-  <input id='q_answer_button' type='submit' value='回答'>
+ 
+  <button id='q_answer_button'>
+    回答
+  </button>
   
 </div>
 
@@ -36,7 +48,25 @@
 
 <script>
 $(function(){
+  
+  $('#q_answer_button').click(function(){
 
+      $(this).html('<i class="fa fa-2x fa-spinner fa-pulse"></i>');
+      
+      var content = $('#q_answer_box').val();
+      
+      
+      $.ajax({
+        method : 'POST',
+        url : '/answer',
+        data : {
+          'answer' : content,
+          'qid' : {{qid}}
+        }
+      }).done(function(response){
+        console.log(response);
+      });
+  });
 
    
 });

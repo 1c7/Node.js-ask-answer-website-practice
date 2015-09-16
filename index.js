@@ -360,19 +360,19 @@ return;
                   var s = date.fromNow(); // an hour ago | 29 minutes ago | a few seconds ago
                   // 这是英文的, 我们要转成中文： 一个小时前, 29分钟前
                   //moment(item.time)
-                  console.log(s);
-                  console.log(year+'年'+month+'月'+day+'日'+hour+':'+minute)
+                  //console.log(s);
+                  //console.log(year+'年'+month+'月'+day+'日'+hour+':'+minute)
               })           
             
             }
 
-            
-            
-            data.result = result[0];
+            //data.qid = qid;
+            data = result[0];
             //res.render('question', { 'r': data });
             
             
-            fs.readFile('views/question.jade', 'utf-8', function(error, source){
+            fs.readFile('views/question.jade', 'utf-8', 
+            function(error, source){
               var template = handlebars.compile(source);
               var html = template(data);
               res.write(html);
