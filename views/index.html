@@ -29,7 +29,7 @@
   
   <article class='q' style='display:none;'>
     <section class='q_title'>
-    <a href='/question/1441438338875'>
+    <a href='/question/1441438338875' class='q_link' >
       经常健身的人，跟健身前比有什么差别？
     </a>
     </section>
@@ -52,12 +52,12 @@
 -->
 
 
-<!--
+
 <div id='profile'>
-头像，名字，通知
-<div id='name'>王可可</div>
+  <div><img src="img/128.jpg" /></div>
+  <div id='name'><a href='profile/{{uid}}'>王可可</a></div>
 </div>
--->
+
 
 <div id='new_question' style='display:none;'>
   <div id='q_box'>
@@ -70,6 +70,15 @@
   <div id='q_next'>下一步</div>
   </div>
 </div>
+
+
+<div id='some-stuff'>
+
+
+</div>
+
+
+
 
 <script>
 $(function(){
@@ -139,6 +148,7 @@ $(function(){
         alert("问题不能为空");
         return;
      }
+     $('#q_content').val(""); // clear input box
     
     // loading animation
     
@@ -149,8 +159,11 @@ $(function(){
       url: "/h_submit",
       context: document.body,
       data: { title: c }
-    }).done(function() {
-      $( this ).addClass( "done" );
+    }).done(function(resp) {
+       if(resp === "ok"){
+          $('#new_question').hide();
+          location.reload(); // 刷新
+       }
     });
      
      

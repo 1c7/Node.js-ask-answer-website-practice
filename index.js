@@ -94,7 +94,6 @@ app.use(session({
 
 var lessMiddleware = require('less-middleware');
 app.use(lessMiddleware(__dirname + '/public', {'debug':true}));
-//app.use(express.static(__dirname + '/public'));
 // https://github.com/emberfeather/less.js-middleware
 
 
@@ -154,12 +153,21 @@ MongoClient.connect(db_url, function(err, db) {
 
 
 // 问题列表页
+// 这里直接返回模板，数据都是ajax拿的。 ajax-index 方法
 app.get('/', function (req, res) {
 
+
+  if (typeof sess !== 'undefined' && typeof sess.userName !== 'undefined') {
+        data.userName = sess.userName;
+  }
+  
+  
+  
   fs.readFile('views/index.html', 'utf-8', function(error, source){
     var template = handlebars.compile(source);
-    //var html = template(data);
-    var html = template();
+    console.log(data);
+    var html = template(data);
+    //var html = template();
     res.write(html);
     res.end();
   });
@@ -168,10 +176,7 @@ app.get('/', function (req, res) {
     var data = {};
     // 这个传给 view
 
-  if (typeof sess !== 'undefined' 
-    && typeof sess.userName !== 'undefined') {
-        data.userName = sess.userName;
-  }
+
 
 
     // Connect to the db
@@ -181,16 +186,21 @@ app.get('/', function (req, res) {
         //var r = db.qa.find();
         var collection = db.collection('qa');
 
-        collection.find().toArray(function (err, result) {
+        collection.find({}, {'sort':['title','asc']})
+        .toArray(function (err, result) {
+        // 排序，查询什么的：  https://mongodb.github.io/node-mongodb-native/markdown-docs/queries.html
+        
           if (err) {
 
             console.log(err);
+            res.end();
 
           } else if (result.length) {
 
             data.result = result
             console.log('Found:', result);
             res.render('display', { 'r': data });
+            res.end();
 
           } else {
             res.write('no result');
@@ -261,6 +271,7 @@ app.post('/h_submit', function (req, res) {
 
     var qid = Date.now();
     doc['qid'] = qid;
+    doc['CreateTime'] = Date.now();
     
     console.log(doc);
 
@@ -270,15 +281,18 @@ app.post('/h_submit', function (req, res) {
         if(err) { return console.dir(err); }
 
         var collection = db.collection('qa');
-        collection.insert(doc);
+        collection.insert(doc, function(err, result){
+          console.log(err);
+          console.log(result);
+        });
         
     });
 
     
     // insert 怎么检测成功失败?
     // https://mongodb.github.io/node-mongodb-native/api-articles/nodekoarticle1.html
-    res.redirect('/'); // 302 重定向
-    //res.send('ok');
+    //res.redirect('/'); // 302 重定向
+    res.send('ok');
 
 
 });
@@ -757,10 +771,14 @@ app.post('/ajax-index', function (req, res) {
         //var r = db.qa.find();
         var collection = db.collection('qa');
 
-        collection.find().toArray(function (err, result) {
+        collection.find({}, {'sort':['time','asc']})
+        .toArray(function (err, result) {
+        // 排序，查询什么的：  https://mongodb.github.io/node-mongodb-native/markdown-docs/queries.html
+        
           if (err) {
 
             console.log(err);
+            res.end();
 
           } else if (result.length) {
 

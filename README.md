@@ -16,6 +16,21 @@ LESS
 
 
 <br>
+#### Problem
+0. 整个问题块可点击
+1. 最新问题应该  排最上面  
+1. 提交问题时有  加载按钮  
+1. 提交问题后 跳到问题页  
+1. 问题页 有添加描述按钮  
+1. 没登陆的时候时候进首页跳转到登陆页
+1. 设计登陆页
+1. 实现登陆页面
+1. 支持扣扣登陆
+1. 微博登陆
+1. 
+
+
+<br>
 #### 步骤
 一步步来(加粗代表目前的进度)  
 1. 提交问题(一个页面提交问题和问题描述，另一个页面看问题的列表)  
@@ -250,11 +265,39 @@ https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ub
 
 <br>
 ##### 14. node.js 用 less
-下次写
+```javascript
+var lessMiddleware = require('less-middleware');
+app.use(lessMiddleware(__dirname + '/public', {'debug':true}));
+// https://github.com/emberfeather/less.js-middleware
+```
+debug = true 对调试非常有用,会在控制台输出会去哪里找了 less 文件,然后编译之后放到哪里了.
+
+
 
 <br>
-##### 15. 留空占位
+##### 15. 进 mongodb 删光制定集合数据
+```
+> mongo  
+> show dbs;  
+> use xxx (xxx is db name)
+> show collections
+> db.xxx.remove({})
+之后 xxx 这个 collection 里的数据就被清空了
+```
 
+
+<br>
+##### 16. Ubuntu 上虚拟键盘的安装方法:
+```
+sudo apt-get install onboard  先安装
+onboard 调用出来
+```
+因为我的q键坏掉了... 
+windows 的 Ctrl+R 输入 osk 调用出虚拟键盘,是没法输入到虚拟机的 Ubuntu 里面的..  
+
+
+<br>
+##### 17. 占位
 
 
 <br/>
