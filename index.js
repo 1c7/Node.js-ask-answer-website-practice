@@ -892,6 +892,32 @@ app.get('/session', function (req, res) {
 
 
 
+// 输出所有 http 请求头
+app.get('/r_header', function (req, res) {
+
+  res.write(JSON.stringify(req.headers));
+  res.end();
+  
+});
+
+
+// 保存所有 http 请求头到本地 txt
+// localhost:3000/r_header_text
+app.get('/r_header_text', function (req, res) {
+
+  var a = JSON.stringify(req.headers);
+  
+fs.writeFile("./a.txt", a, function(err) {
+    if(err) {
+        return console.log(err);
+    }
+
+    console.log("The file was saved!");
+}); 
+
+  res.end();
+
+});
 
 
 /* ========================================
