@@ -1,11 +1,13 @@
-<html>
-
+<!doctype html>
+<html lang='zh-cmn-Hans'>
 <head>
+
 <meta charset="UTF-8">
-<script src="js/jquery-2.1.4.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="css/normalize.css">
 <link rel="stylesheet" type="text/css" href="css/i.css">
 <!-- <script src="js/index.js"></script> -->
+
 </head>
 
 
@@ -43,21 +45,23 @@
 
 </div>
 
-<!--
+
 <div id='right'>
+<!--
   <div id='best_answer'>
     最佳答案广场
   </div>
+  -->
 </div>
--->
 
 
 
+<!--
 <div id='profile'>
   <div><img src="img/128.jpg" /></div>
   <div id='name'><a href='profile/{{uid}}'>王可可</a></div>
 </div>
-
+-->
 
 <div id='new_question' style='display:none;'>
   <div id='q_box'>
@@ -79,7 +83,7 @@
 -->
 
 
-
+<script src="js/jquery-2.1.4.min.js"></script>
 <script>
 $(function(){
 
@@ -120,7 +124,7 @@ $(function(){
 
   // 点击提交, 显示窗口
   $('#ask-q').click(function(event){
-    $('#new_question').show();
+    //$('#new_question').show();
   });
   
   // 点击背景隐藏窗口

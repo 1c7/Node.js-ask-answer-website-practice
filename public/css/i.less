@@ -1,15 +1,13 @@
 body {
-  height:100%;
-  display: flex; /* or inline-flex */
+  display: flex; 
   flex-direction: row;
 }
 
 
 #left{
-  width: 158px;
-  height: 100%; 
+
+  flex: 1;
   background-color:#34495e;
-  /* display:inline-block; */
   
   a{
     text-decoration: none;
@@ -28,12 +26,11 @@ body {
 
 
 #middle{
-  width: 53%;
-  /* height: 100%; */
-  /* background-color:#f99; */
-  /* display:inline-block; */
-  margin-left: 100px;
-  
+
+  flex: 4;
+  margin-right: 110px;
+  margin-left: 110px; 
+
   #middle-top{
     /* background-color:#f96;  */
     padding-top: 30px;
@@ -66,10 +63,6 @@ body {
   .q{
     border-top: #e0e0e0 1px solid;
     border-bottom: #e0e0e0 1px solid;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
     transition: all .1s; 
     
     .q_link{
@@ -83,10 +76,16 @@ body {
   }
   
   .q_title a{
+    &:visited{
+      /* background-color:yellow; */
+      /* color: blue; */
+    }
     display:block;
     font-size: 18px;
     color: #009066;
-    margin-bottom: 9px;
+    height: 70px;
+    line-height: 70px;
+    padding-left: 30px;
     cursor: pointer;
     text-decoration: none;
   }
@@ -207,12 +206,13 @@ body {
 
 
 #right{
+margin-right: 18px;
   /* background-color:#f87; */
-  width: 21%;
-  height: 100%;
-  position: absolute;
-  right: 12px;;
-  
+ /*  width: 21%;
+  height: 100%; */
+   /*position: absolute;
+  right: 12px;;*/
+  flex: 1;
   #best_answer{
     margin-top: 220px;
     background-color: #e2e2e2;

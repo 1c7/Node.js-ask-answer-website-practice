@@ -1,6 +1,6 @@
 // TODO
 /*
-  1. index page
+  login page
 */
 
 var handlebars = require('handlebars');
@@ -83,6 +83,15 @@ app.use(session({
     
 =============================*/
 
+
+/*
+  表明是开发环境还是生产环境
+*/
+var running_ENV = 'dev';
+// var running_ENV = 'production';
+
+
+
 // SESSION
 app.use(session({
   secret: 'keyboard cats2',
@@ -149,7 +158,14 @@ MongoClient.connect(db_url, function(err, db) {
      路由   Routing
     
 =========================*/
+/*
 
+  首页: 问题列表
+  登陆/注册页
+  问题详情页
+
+
+*/
 
 
 // 问题列表页
@@ -878,6 +894,7 @@ return;
     });
     
 });
+// =========== test end ===============
 
 
 // 查看所有 session
