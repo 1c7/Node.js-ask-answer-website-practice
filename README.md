@@ -1,13 +1,5 @@
 ### 练手项目，做个问答网站练下 Node.js 和 MongoDB  
 
-首页有什么?
-  问题标题
-  
-新问题: xxxxxx 暂时没有回答  
-  
-
-操作流程
-
 
 <br>
 #### 具体用啥？
@@ -22,6 +14,17 @@ jQuery
 redis  
 moment.js  
 LESS  
+
+
+<br>
+#### Link
+localhost:3000 首页  
+http://localhost:3000/signup 注册页  
+http://localhost:3000/login 注册页  
+http://localhost:3000/profile 个人账户页  
+
+HTTPS ON signup, login page, localhost test, how ?  
+
 
 
 <br>

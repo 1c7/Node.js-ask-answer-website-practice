@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-cnm-Hans">
+  <head>
+     <meta charset="UTF-8">
+  </head>
+
+  <body>
+    <h2>Log in</h2>
+    <form action='./handle_login' method='post'>
+       <input type='text' placeholder='email' name='email' >
+       <br>
+       <input type='password' placeholder='password' name='pwd'>
+       <br>
+       <input id='login' type='submit' value='Log In' >
+    </form>
+  <body>
+   <script type="text/javascript">
+   
+      var email = document.querySelector('#email');
+      var password = document.querySelector('#pwd');
+      var confirm_password = document.querySelector('#pwd_rep');
+      var login = document.querySelector('#login');
+      
+      login.addEventListener('click', handle_submit);
+      function handle_submit(e){
+        console.log();
+        if(email.value.trim() == ''){
+          alert('邮箱地址不能为空')
+          e.preventDefault();
+        }
+
+        if(password.value.trim() == ''){
+          alert('密码不能为空')
+          e.preventDefault();
+        }
+
+        if(confirm_password.value.trim() == ''){
+          alert('确认密码不能为空')
+          e.preventDefault();
+        }
+        
+        if(password.value != confirm_password.value){
+          alert('密码必须一致')
+          e.preventDefault();
+        }
+
+        return false;
+      }
+
+    </script>
+</html>

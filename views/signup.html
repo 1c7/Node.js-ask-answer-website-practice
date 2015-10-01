@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-cnm-Hans">
+  <head>
+     <meta charset="UTF-8">
+  </head>
+
+  <body>
+    <h2>Sign up</h2>
+    <form action='./handle_signup' method='post'>
+      <input type='email' id='email' placeholder='email address' name='email' >
+      <br/>
+       <input type='email' id='email' placeholder='email address' name='email' >
+       <br>
+       <input type='password 'id='pwd'  placeholder='password' name='pwd'>
+       <br>
+       <input type='password' id='pwd_rep' placeholder='confirm password' name='confirm_pwd'>
+       <br>
+       <input id="submit" type='submit' value='Sign Up' >
+    </form>
+  <body>
+    <script type="text/javascript">
+      var email = document.querySelector('#email');
+      var password = document.querySelector('#pwd');
+      var confirm_password = document.querySelector('#pwd_rep');
+      var submit = document.querySelector('#submit');
+      submit.addEventListener('click', handle_submit);
+      function handle_submit(e){
+        console.log();
+        if(email.value.trim() == ''){
+          alert('邮箱地址不能为空')
+          e.preventDefault();
+        }
+
+        if(password.value.trim() == ''){
+          alert('密码不能为空')
+          e.preventDefault();
+        }
+
+        if(confirm_password.value.trim() == ''){
+          alert('确认密码不能为空')
+          e.preventDefault();
+        }
+        
+        if(password.value != confirm_password.value){
+          alert('密码必须一致')
+          e.preventDefault();
+        }
+
+        return false;
+      }
+
+    </script>
+
+
+</html>

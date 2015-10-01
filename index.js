@@ -27,6 +27,9 @@ var bodyParser = require('body-parser');
 
 var bcrypt = require('bcrypt-nodejs');
 // 加密密码用的  https://github.com/shaneGirish/bcrypt-nodejs
+var salt = 'yoyo-ask-answer-19';
+
+
 
 // var redis = require('redis');
 // 内存数据库
@@ -499,13 +502,14 @@ app.get('/answer-downvote', function (req, res) {
 app.get('/signup', function (req, res) {
 
 
-  fs.readFile('views/signup.jade', 'utf-8', function(error, source){
+  fs.readFile('views/signup.html', 'utf-8', function(error, source){
     var template = handlebars.compile(source);
     //var html = template(data);
     var html = template();
     res.write(html);
     res.end();
   });
+
 
 });
 
@@ -521,40 +525,37 @@ app.get('/account/username_exists', function (req, res) {
 
 
 // 处理注册请求
-app.post('/account/handle_signup', function (req, res) {
+app.post('/handle_signup', function (req, res) {
 
   // 参数是否完整
-  var username = req.body.un;
+  var email = req.body.email;
   var password = req.body.pwd;
   var confirm_password = req.body.confirm_pwd;
   
-  if(username === '' || password === ''|| confirm_password === ''){
+  if(email === '' || password === '' || confirm_password === ''){
       res.send('参数不全');
+      res.end();
       return;
   }
   
   if(password != confirm_password){
       res.send('两次密码不一致!');
+      res.end();
       return;
   }
   
-  // 对用户名进行操作
-  // 检查用户名是否合法，
-  // 用户名中不允许的字符是:
+  // check email address again
   
   
-  // var uid =
-  // 弄个 user id
-  
-  
- 
+
   
   // 账户是否已经存在?
   MongoClient.connect(db_url, function(err, db) {
         if(err) { return console.dir(err); }
 
         var collection = db.collection('account');
-        collection.findOne({'username':username}, function(err, r){
+        
+        collection.findOne({'email':email}, function(err, r){
             if(r != null){
               res.send("用户名已存在");
               console.log("用户名已存在");
@@ -562,7 +563,6 @@ app.post('/account/handle_signup', function (req, res) {
             }else{
               
               // 加密密码
-              var salt = 'yoyo-ask-answer-19';
               password = password + salt;
               
               password = bcrypt.hashSync(password);
@@ -573,7 +573,7 @@ app.post('/account/handle_signup', function (req, res) {
   
               var doc = {
                 // 'userID' : 
-                'username' : username, 
+                'email' : email, 
                 'password' : password,
                 'creationDate' : creationDate
               };
@@ -598,31 +598,34 @@ app.post('/account/handle_signup', function (req, res) {
 // 登陆页面
 app.get('/login', function (req, res) {
 
-  res.set({
-    'Content-Type': 'text/html'
+  fs.readFile('views/login.html', 'utf-8', function(error, source){
+    var template = handlebars.compile(source);
+    //var html = template(data);
+    var html = template();
+    res.write(html);
+    res.end();
   });
-    res.sendFile('./views/login.jade');
-    
+  
+  
 });
 
 
 
 
 // 处理登陆请求
-app.post('/account/handle_login', function (req, res) {
+app.post('/handle_login', function (req, res) {
 
   // 参数是否完整
-  var username = req.body.un;
+  var email = req.body.email;
   var password = req.body.pwd;
-  if(username === '' || password === ''){
+  if(email.trim() === '' || password.trim() === ''){
       res.send('[登陆失败]参数不全');
+      res.end();
       return;
   }
   
-  // salt
-  var salt = 'yoyo-ask-answer-19';
+
   password = password + salt;
-  
   
   sess=req.session;
   
@@ -633,7 +636,7 @@ app.post('/account/handle_login', function (req, res) {
 
       var collection = db.collection('account');
 
-      collection.findOne({'username':username}, function(err, account) {
+      collection.findOne({'email':email}, function(err, account) {
 
         console.log(account);
         if(account == null){
@@ -656,6 +659,7 @@ app.post('/account/handle_login', function (req, res) {
             
             console.log(sess);
             res.redirect('/');
+            res.end();
             return;
             
           }else{
